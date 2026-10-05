@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { ensureMerged, flushProject, getProject, getRule, store } from '../logic/store'
 import { buildSummary, conservationText } from '../logic/merge'
+import { loadDeliveryReport, type DeliveryReport } from '../logic/delivery'
 import {
   buildOrderSheet,
   detailRows,
@@ -47,6 +48,15 @@ const orderSheet = computed(() => {
 })
 
 const blocked = computed(() => !summary.value?.conserved)
+
+// 交付自检结论：与打包侧、/delivery 页面读同一份机读结论，本页只做展示
+const delivery = ref<DeliveryReport | null>(null)
+const deliveryError = ref('')
+onMounted(async () => {
+  const result = await loadDeliveryReport()
+  delivery.value = result.report
+  deliveryError.value = result.error ?? ''
+})
 
 async function prepare(): Promise<boolean> {
   const current = project.value
@@ -130,6 +140,33 @@ const genderText = (gender: string): string => (gender === 'male' ? '男' : '女
           依据规则版本 <b>{{ project.ruleVersion }}</b>（{{ rule.label }}）｜ 总录入 {{ summary.totals.totalRows }} ｜
           有效 {{ summary.totals.validRows }} ｜ 总套数 {{ summary.totals.accountedQty }}
         </div>
+      </div>
+    </div>
+
+    <div class="card no-print">
+      <div class="card-head">
+        <h2>交付自检结论（导出说明）</h2>
+        <div class="spacer"></div>
+        <span v-if="delivery" class="badge" :class="delivery.overall === 'pass' ? 'badge-ok' : 'badge-danger'">
+          {{ delivery.overall === 'pass' ? '关卡通过' : '关卡未过' }}
+        </span>
+      </div>
+      <div class="card-body tight">
+        <p v-if="deliveryError" class="notice notice-error">{{ deliveryError }}</p>
+        <template v-else-if="delivery">
+          <p>
+            本包由交付关卡核验：{{ delivery.checks.filter((c) => c.status === 'pass').length }} 项过、
+            {{ delivery.checks.filter((c) => c.status === 'fail').length }} 项不过、
+            {{ delivery.checks.filter((c) => c.status === 'skip').length }} 项跳过（提交 <code>{{ delivery.commit }}</code>）。
+            包内不含任何量体名单与下单表文件；本结论与打包命令、<RouterLink to="/delivery">交付自检页</RouterLink>读的是同一份机读结论。
+          </p>
+          <p v-if="delivery.overall !== 'pass'" class="notice notice-error">
+            关卡未通过：{{ delivery.checks.filter((c) => c.status === 'fail').map((c) => c.title).join('；') }}。此包不得交付。
+          </p>
+          <p v-if="delivery.checks.some((c) => c.status === 'skip')" class="hint">
+            跳过项：{{ delivery.checks.filter((c) => c.status === 'skip').map((c) => `${c.title}（${c.skipReason}）`).join('；') }}
+          </p>
+        </template>
       </div>
     </div>
 

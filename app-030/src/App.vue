@@ -49,6 +49,7 @@ async function commitOperator(): Promise<void> {
         <nav class="nav">
           <RouterLink to="/">项目列表</RouterLink>
           <RouterLink to="/rules">号型规则</RouterLink>
+          <RouterLink to="/delivery">交付自检</RouterLink>
           <span class="privacy-pill">数据不出本地 · 无任何上传</span>
           <label class="operator-box">
             操作人

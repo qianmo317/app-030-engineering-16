@@ -1,0 +1,11 @@
+# 量体名单与下单表（含姓名与身体尺寸，属个人隐私，绝不入库）
+data/measurements/
+data/*.xlsx
+data/*.csv
+exports/
+samples/
+
+# 交付关卡产出的机读结论（每次打包重新生成，以 dist/ 内为准，不入库）
+public/delivery-report.json
+delivery-report.json
+.gate-*/

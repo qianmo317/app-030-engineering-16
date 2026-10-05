@@ -1,0 +1,36 @@
+# 构建上下文排除清单 —— 交付关卡第 08 项逐项核对本文件
+# 原则：量体数据不出本机，任何名单类文件绝不进构建上下文、更不进镜像
+
+# 依赖与构建产物（镜像内会重新 npm ci + build，无需进上下文）
+node_modules
+dist
+
+# 版本库与编辑器
+.git
+.gitignore
+.gitattributes
+.vscode
+.idea
+
+# 环境文件与日志（密钥绝不进镜像）
+.env
+.env.*
+*.log
+coverage
+
+# 工程说明文件（运行不需要；注意 nginx.conf 不能排除——运行阶段要 COPY 它）
+Dockerfile
+docker-compose.yml
+*.md
+
+# 量体名单与下单表（含姓名与身体尺寸，属个人隐私，绝不进上下文）
+data/
+samples/
+exports/
+**/*.csv
+**/*.xlsx
+**/*.xls
+**/*.tsv
+
+# 关卡临时产物
+.gate-*/

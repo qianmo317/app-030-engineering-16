@@ -10,6 +10,7 @@ const router = createRouter({
     { path: '/merge/:id', name: 'merge', component: () => import('../views/MergeView.vue') },
     { path: '/summary/:id', name: 'summary', component: () => import('../views/SummaryView.vue') },
     { path: '/export/:id', name: 'export', component: () => import('../views/ExportView.vue') },
+    { path: '/delivery', name: 'delivery', component: () => import('../views/DeliveryView.vue') },
     { path: '/:pathMatch(.*)*', redirect: '/' }
   ]
 })
