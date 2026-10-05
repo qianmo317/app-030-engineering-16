@@ -1,0 +1,10 @@
+# 量体名单与下单表：姓名 + 身体尺寸属个人隐私，绝不入库（通用兜底见根目录 .gitignore）
+data/
+samples/
+exports/
+measurements/
+*.csv
+*.xlsx
+*.xls
+*.tsv
+*.numbers

@@ -115,7 +115,7 @@ type SummaryRow = { sizeCode: string; gender: Gender; qty: number; isSpecial: bo
 ## 12. 容器化与构建（Docker）
 
 - **Dockerfile（多阶段）**：`node:20-alpine` 构建 → `nginx:1.27-alpine` 只拷 `dist/` 与 `nginx.conf`
-- **docker-compose.yml**：服务名 `app-030`，端口 **`8110:80`**，`restart: unless-stopped`；`HEALTHCHECK` 请求 `/healthz`
+- **docker-compose.yml**：服务名 `app-030`，端口 **`8260:80`**，`restart: unless-stopped`；`HEALTHCHECK` 请求 `/healthz`
 - **nginx.conf**：SPA 回退；哈希资源 `immutable`；`index.html` no-cache；gzip
 - **无后端、无上传**：量体数据只在本机（浏览器），README 必须写明「数据不出本地」这一隐私承诺
 - 中文字体与号型规则表本地打包
@@ -123,11 +123,11 @@ type SummaryRow = { sizeCode: string; gender: Gender; qty: number; isSpecial: bo
 ```bash
 cd frontend/app-030
 docker compose up -d --build
-curl http://localhost:8110/healthz
+curl http://localhost:8260/healthz
 docker compose down
 ```
 
-- **验收**：`http://localhost:8110` 完成「配置号型规则 → 录入/导入量体 → 归并 → 守恒校验 → 导出下单表」；断网可用；镜像 < 60MB。
+- **验收**：`http://localhost:8260` 完成「配置号型规则 → 录入/导入量体 → 归并 → 守恒校验 → 导出下单表」；断网可用；镜像 < 60MB。
 
 ### 忽略文件（.dockerignore / .gitignore）
 

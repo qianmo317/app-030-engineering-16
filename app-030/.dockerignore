@@ -1,0 +1,34 @@
+# 构建上下文排除：让镜像里只有「构建所需源码 + nginx 配置」，名单类数据绝不进上下文。
+# 注意：nginx.conf 不能排除（运行阶段 COPY nginx.conf 要用）；scripts/ 保留（镜像内跑发布关卡）。
+
+# 依赖与构建产物（镜像内重新 npm ci / npm run build）
+node_modules
+dist
+
+# 版本控制与本地环境
+.git
+.gitignore
+.gitattributes
+.dockerignore
+.env
+.env.*
+*.log
+coverage
+.vscode
+.idea
+
+# 构建定义与文档（镜像内不需要；Dockerfile 由 docker 单独读取，不在上下文也没关系）
+Dockerfile
+docker-compose.yml
+*.md
+
+# 量体名单与下单表：个人隐私，绝不进构建上下文（承诺：数据不出本机）
+data/
+samples/
+exports/
+measurements/
+**/*.csv
+**/*.xlsx
+**/*.xls
+**/*.tsv
+**/*.numbers

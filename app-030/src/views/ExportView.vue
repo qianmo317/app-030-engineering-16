@@ -18,6 +18,7 @@ import {
 import { downloadBlob, downloadText, toCsvText } from '../logic/csv'
 import { buildXlsxBlob } from '../logic/xlsx'
 import { chestWaistDiffCm, formatCm } from '../logic/precision'
+import ReleaseGateCard from '../components/ReleaseGateCard.vue'
 
 const route = useRoute()
 const project = computed(() => getProject(route.params.id as string))
@@ -199,9 +200,12 @@ const genderText = (gender: string): string => (gender === 'male' ? '男' : '女
         <p v-if="message" class="notice notice-ok" style="margin-top: 10px">{{ message }}</p>
         <p class="hint" style="margin-top: 8px">
           导出的下单汇总表与下方「与导出一致的明细」逐行相同；量体明细含号型结果与覆写留痕，可直接打印回贴给学校核对。
+          交付前请确认下方「交付自检结论」为通过——导出说明、本页与打包脚本读的是同一份机读报告。
         </p>
       </div>
     </div>
+
+    <ReleaseGateCard title="交付自检结论（导出说明 · 与打包侧同一份机读报告）" />
 
     <div class="card no-print">
       <div class="card-head">

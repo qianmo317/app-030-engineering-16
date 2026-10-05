@@ -6,7 +6,8 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY . .
-RUN npm run build
+# 发布关卡随构建一起跑：不过则镜像构建直接失败（硬拦），机读结论一并打进 dist 供页面自检读取
+RUN npm run build && node scripts/release-gate.mjs --no-build
 
 # ---------- 运行阶段：nginx:1.27-alpine 只提供静态文件 ----------
 FROM nginx:1.27-alpine AS runtime

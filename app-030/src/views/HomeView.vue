@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { createProject, deleteProject, store } from '../logic/store'
 import { DEFAULT_RULE_VERSION } from '../logic/sizeRules'
 import type { Project, ProjectKind } from '../logic/types'
+import ReleaseGateCard from '../components/ReleaseGateCard.vue'
 
 const router = useRouter()
 
@@ -179,6 +180,8 @@ function formatTime(value: number): string {
         </table>
       </div>
     </div>
+
+    <ReleaseGateCard title="交付自检（发布关卡结论，与打包侧、导出说明同一份机读报告）" />
 
     <div class="card">
       <div class="card-head"><h3>使用流程</h3></div>
